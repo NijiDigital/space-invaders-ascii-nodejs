@@ -1,0 +1,8 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src/index.ts"],
+  "includeVersion": true,
+  "name": "space-invaders",
+  "out": "./dist/doc",
+  "readme": "README.md"
+}

@@ -1,0 +1,10 @@
+{
+  "bracketSpacing": true,
+  "endOfLine": "auto",
+  "insertPragma": false,
+  "printWidth": 80,
+  "requirePragma": false,
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "all"
+}

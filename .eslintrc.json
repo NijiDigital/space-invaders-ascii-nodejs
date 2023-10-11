@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/eslintrc.json",
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["niji-ts"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "createDefaultProgram": true,
+    "ecmaVersion": 12,
+    "project": ["./tsconfig.eslint.json"],
+    "sourceType": "module",
+    "tsconfigRootDir": "."
+  },
+  "root": true
+}

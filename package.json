@@ -1,0 +1,42 @@
+{
+  "name": "space-invaders",
+  "version": "1.0.0",
+  "description": "A space invaders game in ASCII art with NodeJS and TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:doc": "typedoc",
+    "clean": "rimraf dist lib",
+    "dev": "ts-node src/index.ts",
+    "lint": "eslint .",
+    "start": "per-env",
+    "start:development": "npm run dev",
+    "start:production": "node lib/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "validate": "npm run build && npm run lint"
+  },
+  "author": "Olivier Penhoat <openhoat@gmail.com> (http://headwood.net/)",
+  "license": "ISC",
+  "engines": {
+    "node": "^18.17.0",
+    "npm": "^9.8.0"
+  },
+  "volta": {
+    "node": "18.17.1",
+    "npm": "9.8.1"
+  },
+  "dependencies": {
+    "per-env": "1.0.2",
+    "play-sound": "1.1.6",
+    "terminal-canvas": "3.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "20.8.3",
+    "@types/play-sound": "1.1.0",
+    "eslint-config-niji-ts": "0.0.1",
+    "rimraf": "5.0.5",
+    "ts-node": "10.9.1",
+    "typedoc": "0.25.2",
+    "typescript": "5.2.2"
+  }
+}

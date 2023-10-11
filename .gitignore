@@ -1,0 +1,14 @@
+/.idea/
+/.vscode/
+/dist/
+/lib/
+/node_modules/
+/tmp/
+
+.npm/
+
+tsconfig.tsbuildinfo
+.tmp_*
+
+/.best-score
+/etc/*.cast

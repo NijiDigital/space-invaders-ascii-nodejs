@@ -1,0 +1,19 @@
+#!/bin/env bash
+
+keyboardRepeatInterval=$(gsettings get org.gnome.desktop.peripherals.keyboard repeat-interval)
+keyboardDelay=$(gsettings get org.gnome.desktop.peripherals.keyboard delay)
+
+restoreKeyboardPrefs(){
+  gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval "${keyboardRepeatInterval}"
+  gsettings set org.gnome.desktop.peripherals.keyboard delay "${keyboardDelay}"
+}
+
+trap "restoreKeyboardPrefs" EXIT
+
+gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 30
+gsettings set org.gnome.desktop.peripherals.keyboard delay 30
+
+npm start
+
+read -r -t 0.1 -s -e --
+stty echo echok
