@@ -1,28 +1,41 @@
 import { Game } from './components/game'
-import { EXCEPTION_NAME } from './util/exception-names'
+import { GameEvent } from './components/game-event'
+import { startListening, stopListening } from './util/key-listener'
 
-let game = new Game()
+let game: Game | undefined
+
+const quit = (): void => {
+  stopListening()
+  if (game) {
+    game.quit()
+    game = undefined
+  }
+}
+
+const start = (): void => {
+  game = new Game()
+  game.events.on(GameEvent.GameOver, () => {
+    if (game) {
+      game.endOfGame()
+    }
+  })
+  game.events.on(GameEvent.Restart, () => {
+    quit()
+    setTimeout(start, 1000)
+  })
+  game.events.on(GameEvent.Quit, () => {
+    quit()
+    process.exit(0)
+  })
+  startListening()
+  game.play()
+}
 
 process.on('uncaughtException', (error) => {
-  if (error.name === EXCEPTION_NAME.gameOver) {
-    game.endOfGame()
-    return
-  }
-  if (error.name === EXCEPTION_NAME.quit) {
-    process.exit(0)
-  }
-  if (error.name === EXCEPTION_NAME.restart) {
-    game.reset()
-    setTimeout((): void => {
-      game = new Game()
-      game.play()
-    }, 1000)
-    return
-  }
-  game.reset()
+  quit()
   console.error('/!\\ Error')
   console.log(error)
   process.exit(1)
 })
 
-game.play()
+start()

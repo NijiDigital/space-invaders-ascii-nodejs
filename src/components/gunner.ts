@@ -2,13 +2,17 @@ import { join } from 'node:path'
 
 import type { Canvas } from 'terminal-canvas'
 
+import type { Explodable, Resetable, ShapeConfig, Shooterable } from '../types'
 import { baseDir } from '../util/base-dir'
 import { center } from '../util/helper'
 import { playSound } from '../util/sound-player'
 import { Bullet } from './bullet'
-import { Shape, type ShapeConfig } from './shape'
+import { Shape } from './shape'
 
-export class Gunner extends Shape {
+export class Gunner
+  extends Shape
+  implements Shooterable, Explodable, Resetable
+{
   static readonly contents = {
     exploded: [
       [" ,' %  ", ' ;&+,! '],

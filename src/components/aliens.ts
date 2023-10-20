@@ -1,17 +1,17 @@
+import type { EventEmitter } from 'node:events'
 import { join } from 'node:path'
 
 import type { Canvas } from 'terminal-canvas'
 
-import type { Plan, Shapeable } from '../types'
+import type { Plan, Resetable, Shapeable, ShapeConfig } from '../types'
 import { baseDir } from '../util/base-dir'
-import { EXCEPTION_NAME } from '../util/exception-names'
 import { alea, mapIterate, oneOf, reduceIterate } from '../util/helper'
 import { playSound } from '../util/sound-player'
 import { Alien } from './alien'
-import type { ShapeConfig } from './shape'
+import { GameEvent } from './game-event'
 import { Shape } from './shape'
 
-export class Aliens implements Shapeable {
+export class Aliens implements Shapeable, Resetable {
   static readonly alienContents = [
     Alien.contents.alien1,
     Alien.contents.alien2,
@@ -39,6 +39,7 @@ export class Aliens implements Shapeable {
 
   readonly bgColor: string | undefined
   readonly canvas: Canvas
+  readonly events: EventEmitter
   readonly hSpace: number
 
   accelDuration = 20000
@@ -50,12 +51,17 @@ export class Aliens implements Shapeable {
   timer: NodeJS.Timeout | undefined
   timerDuration!: number
 
-  constructor(canvas: Canvas, config: Pick<ShapeConfig, 'bgColor'>) {
+  constructor(
+    canvas: Canvas,
+    config: Pick<ShapeConfig, 'bgColor'>,
+    events: EventEmitter,
+  ) {
     this.canvas = canvas
     this.hSpace = Math.round(
       (canvas.width - 2 * Aliens.hMargin) / Aliens.noItemsPerLine,
     )
     this.bgColor = config.bgColor
+    this.events = events
   }
 
   clearTimers(): void {
@@ -186,9 +192,8 @@ export class Aliens implements Shapeable {
       Shape.checkPosition(this.canvas, maxX, maxY, Alien.width, Alien.height)
     if (!hasValidPosition) {
       if (maxY + Alien.height >= this.canvas.height - Alien.height - 1) {
-        const error = new Error('Game Over! (You lose ^⁾')
-        error.name = EXCEPTION_NAME.gameOver
-        throw error
+        this.events.emit(GameEvent.GameOver)
+        return
       }
       if (this.dy === 0) {
         this.dy = 1
@@ -227,12 +232,7 @@ export class Aliens implements Shapeable {
     this.resetAccelTimer()
     const nextTick = (): void => {
       this.timer = setTimeout(() => {
-        try {
-          this.tick(collisionHandler)
-        } catch (err) {
-          this.clearTimers()
-          throw err
-        }
+        this.tick(collisionHandler)
         nextTick()
       }, this.timerDuration)
     }

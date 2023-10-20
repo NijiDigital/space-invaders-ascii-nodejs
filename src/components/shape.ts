@@ -1,17 +1,7 @@
 import type { Canvas } from 'terminal-canvas'
 
-import type { Plan, Shapeable } from '../types'
+import type { Plan, Shapeable, ShapeConfig } from '../types'
 import { eachIterate, getMaxLength, mapIterate } from '../util/helper'
-
-export interface ShapeConfig {
-  bgColor?: string
-  contents?: string[][]
-  fgColor?: string
-  height: number
-  width: number
-  x: number
-  y: number
-}
 
 export class Shape implements Shapeable {
   static checkPosition(

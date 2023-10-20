@@ -1,11 +1,11 @@
 import type { Canvas } from 'terminal-canvas'
 
-import type { Explodable, Shooter } from '../types'
+import type { Explodable, ShapeConfig, Shooterable } from '../types'
 import { center } from '../util/helper'
 import { Bullet } from './bullet'
-import { Shape, type ShapeConfig } from './shape'
+import { Shape } from './shape'
 
-export class Alien extends Shape implements Shooter, Explodable {
+export class Alien extends Shape implements Shooterable, Explodable {
   static readonly colors = {
     alien1: '#62DE6D',
     alien2: '#42E9F4',

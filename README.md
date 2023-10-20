@@ -4,7 +4,20 @@ A space invaders game in ASCII art made with love, NodeJS and TypeScript.
 
 ![Space Invaders session](etc/space-invaders-session.gif)
 
-> TODO: complete
+### Getting started
+
+Run the game:
+
+```shell
+npm start
+```
+
+For a better keyboard experience, on Linux, use:
+```shell
+bin/start
+```
+
+Enjoy!
 
 ### References
 

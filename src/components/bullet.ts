@@ -1,11 +1,12 @@
 import type { Canvas } from 'terminal-canvas'
 
+import type { ShapeConfig, Stoppable } from '../types'
 import { getMaxLength } from '../util/helper'
-import { Shape, type ShapeConfig } from './shape'
+import { Shape } from './shape'
 
 export type BulletDirection = 'down' | 'up'
 
-export class Bullet extends Shape {
+export class Bullet extends Shape implements Stoppable {
   readonly direction: BulletDirection
   timer?: NodeJS.Timeout
 

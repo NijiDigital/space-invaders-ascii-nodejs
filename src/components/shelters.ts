@@ -1,8 +1,7 @@
 import type { Canvas } from 'terminal-canvas'
 
-import type { Plan, Shapeable } from '../types'
+import type { Plan, Shapeable, ShapeConfig } from '../types'
 import { mapIterate } from '../util/helper'
-import type { ShapeConfig } from './shape'
 import { Shelter } from './shelter'
 
 export class Shelters implements Shapeable {

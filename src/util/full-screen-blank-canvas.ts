@@ -1,8 +1,10 @@
+import { stdout } from 'node:process'
+
 import { Canvas } from 'terminal-canvas'
 
 import { eachIterate, mapIterate } from './helper'
 
-const { columns, rows } = process.stdout
+const { columns, rows } = stdout
 
 export const screenWidth = columns
 export const screenHeight = rows
@@ -19,4 +21,9 @@ export const createCanvas = (backgroundColor = '#000000'): Canvas => {
   })
   canvas.flush()
   return canvas
+}
+
+export const resetCanvas = (canvas: Canvas): void => {
+  canvas.reset().showCursor()
+  canvas.restoreScreen()
 }

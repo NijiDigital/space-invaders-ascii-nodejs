@@ -1,19 +1,20 @@
+import { EventEmitter } from 'node:events'
 import { join } from 'node:path'
 
 import type { Canvas } from 'terminal-canvas'
 
 import { baseDir } from '../util/base-dir'
-import { EXCEPTION_NAME } from '../util/exception-names'
-import { createCanvas } from '../util/full-screen-blank-canvas'
+import { createCanvas, resetCanvas } from '../util/full-screen-blank-canvas'
 import { displayGameOverBoard } from '../util/game-over-board'
 import { centerText } from '../util/helper'
+import type { KeyListener } from '../util/key-listener'
 import {
-  disableAllKeyPressed,
-  disableKeyPressed,
-  onKeyPressed,
-} from '../util/keyboard-listener'
+  registerKeyListeners,
+  unregisterKeyListeners,
+} from '../util/key-listener'
 import { playSound } from '../util/sound-player'
 import { Aliens } from './aliens'
+import { GameEvent } from './game-event'
 import { Gunner } from './gunner'
 import type { Shape } from './shape'
 import { Shelters } from './shelters'
@@ -24,32 +25,67 @@ export class Game {
 
   readonly aliens: Aliens
   readonly canvas: Canvas
+  readonly events: EventEmitter
   readonly gunner: Gunner
+  readonly keyListeners: KeyListener[]
+  readonly playKeyListeners: KeyListener[]
 
   score: number
   shelters!: Shelters
 
   constructor() {
+    this.events = new EventEmitter()
     const canvas = createCanvas(Game.backgroundColor)
     this.canvas = canvas
     this.score = 0
     this.gunner = new Gunner(canvas, { bgColor: Game.backgroundColor })
-    this.aliens = new Aliens(canvas, { bgColor: Game.backgroundColor })
+    this.aliens = new Aliens(
+      canvas,
+      { bgColor: Game.backgroundColor },
+      this.events,
+    )
     this.resetShelters()
-    onKeyPressed('q', () => {
-      this.reset()
-      const error = new Error('Quit')
-      error.name = EXCEPTION_NAME.quit
-      throw error
-    })
-    onKeyPressed('r', () => {
-      disableAllKeyPressed()
-      this.aliens.clearTimers()
-      this.canvas.reset()
-      const error = new Error('Restart')
-      error.name = EXCEPTION_NAME.restart
-      throw error
-    })
+    this.keyListeners = [
+      {
+        key: 'q',
+        listener: (): void => {
+          this.events.emit(GameEvent.Quit)
+        },
+      },
+      {
+        key: 'r',
+        listener: (): void => {
+          this.events.emit(GameEvent.Restart)
+        },
+      },
+    ]
+    this.playKeyListeners = [
+      {
+        key: 'left',
+        listener: (): void => {
+          this.gunner.erase()
+          this.gunner.moveBy(-1, 0)
+          this.gunner.draw()
+        },
+      },
+      {
+        key: 'right',
+        listener: (): void => {
+          this.gunner.erase()
+          this.gunner.moveBy(1, 0)
+          this.gunner.draw()
+        },
+      },
+      {
+        key: 'space',
+        listener: (): void => {
+          this.gunner.shoot((bullet) =>
+            this.handleGunnerBulletCollision(bullet),
+          )
+        },
+      },
+    ]
+    registerKeyListeners(this.keyListeners)
   }
 
   displayScore(): void {
@@ -62,11 +98,9 @@ export class Game {
   }
 
   endOfGame(): void {
-    const keysToDisable = ['left', 'right', 'space']
-    keysToDisable.forEach((key) => {
-      disableKeyPressed(key)
-    })
+    unregisterKeyListeners(this.playKeyListeners)
     this.shelters.erase()
+    this.aliens.clearTimers()
     this.aliens.stop()
     this.gunner.stop()
     this.gunner.reset()
@@ -121,36 +155,22 @@ export class Game {
     return true
   }
 
-  listenKeyboard(): void {
-    onKeyPressed('left', () => {
-      this.gunner.erase()
-      this.gunner.moveBy(-1, 0)
-      this.gunner.draw()
-    })
-    onKeyPressed('right', () => {
-      this.gunner.erase()
-      this.gunner.moveBy(1, 0)
-      this.gunner.draw()
-    })
-    onKeyPressed('space', () => {
-      this.gunner.shoot((bullet) => this.handleGunnerBulletCollision(bullet))
-    })
-  }
-
   play(): void {
     this.score = 0
     this.displayScore()
     this.gunner.draw()
     this.shelters.draw()
-    this.listenKeyboard()
+    registerKeyListeners(this.playKeyListeners)
     this.aliens.run((bullet) => this.handleAlienBulletCollision(bullet))
   }
 
-  reset(): void {
+  quit(): void {
+    unregisterKeyListeners([...this.playKeyListeners, ...this.keyListeners])
+    this.events.removeAllListeners()
     this.aliens.clearTimers()
     this.aliens.reset()
     this.gunner.reset()
-    this.canvas.reset().showCursor()
+    resetCanvas(this.canvas)
   }
 
   resetShelters(): void {

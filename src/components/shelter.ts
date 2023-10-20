@@ -1,7 +1,7 @@
 import type { Canvas } from 'terminal-canvas'
 
-import type { Plan, Shapeable } from '../types'
-import { Shape, type ShapeConfig } from './shape'
+import type { Plan, Shapeable, ShapeConfig } from '../types'
+import { Shape } from './shape'
 
 export class Shelter implements Shapeable {
   static color = '#F83B3A'
