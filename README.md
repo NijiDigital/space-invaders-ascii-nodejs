@@ -15,8 +15,16 @@ npm start
 ```
 
 For a better keyboard experience, on Linux, use:
+
 ```shell
 bin/start
+```
+
+Run in production mode:
+
+```shell
+npm run build
+npm run start:production
 ```
 
 Enjoy!
