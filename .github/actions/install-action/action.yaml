@@ -1,0 +1,30 @@
+name: install
+description: Install specific version of Node and NPM
+
+inputs:
+  node-version:
+    description: NodeJS version
+    required: true
+  npm-version:
+    description: NPM version
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install NodeJS version ${{ inputs.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: npm-${{ hashFiles('package-lock.json') }}
+        restore-keys: npm-
+    - name: Install NPM
+      shell: bash
+      run: npm i -g npm@${NPM_VERSION}
+    - name: Install dependencies
+      shell: bash
+      run: npm ci --prefer-offline --include=dev --ignore-scripts

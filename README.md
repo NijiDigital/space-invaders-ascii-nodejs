@@ -1,3 +1,5 @@
+[![build](https://github.com/NijiDigital/space-invaders-ascii-nodejs/actions/workflows/build.yaml/badge.svg)](https://github.com/NijiDigital/space-invaders-ascii-nodejs/actions/workflows/build.yaml)
+
 ## Space Invaders
 
 A space invaders game in ASCII art made with love, NodeJS and TypeScript.
