@@ -2,6 +2,7 @@ import type { Canvas } from 'terminal-canvas'
 
 import type { Plan, Shapeable, ShapeConfig } from '../types'
 import { mapIterate } from '../util/helper'
+import Constants from './constants'
 import { Shelter } from './shelter'
 
 export class Shelters implements Shapeable {
@@ -13,7 +14,7 @@ export class Shelters implements Shapeable {
     const hSpace = Math.round((canvas.width - 2 * hMargin) / noItems)
     this.items = mapIterate(noItems, (colIndex) => {
       const x = Math.round(
-        hMargin + colIndex * hSpace + hSpace / 2 - Shelter.width / 2,
+        hMargin + colIndex * hSpace + hSpace / 2 - Constants.shelter.width / 2,
       )
       return new Shelter(canvas, {
         x,

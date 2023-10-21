@@ -14,13 +14,13 @@ import {
 } from '../util/key-listener'
 import { playSound } from '../util/sound-player'
 import { Aliens } from './aliens'
+import Constants from './constants'
 import { GameEvent } from './game-event'
 import { Gunner } from './gunner'
 import type { Shape } from './shape'
 import { Shelters } from './shelters'
 
 export class Game {
-  static backgroundColor = '#000000'
   static readonly soundFileExplosion = join(baseDir, 'sounds', 'explosion.wav')
 
   readonly aliens: Aliens
@@ -35,13 +35,15 @@ export class Game {
 
   constructor() {
     this.events = new EventEmitter()
-    const canvas = createCanvas(Game.backgroundColor)
+    const canvas = createCanvas(Constants.game.backgroundColor)
     this.canvas = canvas
     this.score = 0
-    this.gunner = new Gunner(canvas, { bgColor: Game.backgroundColor })
+    this.gunner = new Gunner(canvas, {
+      bgColor: Constants.game.backgroundColor,
+    })
     this.aliens = new Aliens(
       canvas,
-      { bgColor: Game.backgroundColor },
+      { bgColor: Constants.game.backgroundColor },
       this.events,
     )
     this.resetShelters()
@@ -174,6 +176,8 @@ export class Game {
   }
 
   resetShelters(): void {
-    this.shelters = new Shelters(this.canvas, { bgColor: Game.backgroundColor })
+    this.shelters = new Shelters(this.canvas, {
+      bgColor: Constants.game.backgroundColor,
+    })
   }
 }

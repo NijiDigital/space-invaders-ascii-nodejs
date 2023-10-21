@@ -8,23 +8,24 @@ import { baseDir } from '../util/base-dir'
 import { alea, mapIterate, oneOf, reduceIterate } from '../util/helper'
 import { playSound } from '../util/sound-player'
 import { Alien } from './alien'
+import Constants from './constants'
 import { GameEvent } from './game-event'
 import { Shape } from './shape'
 
 export class Aliens implements Shapeable, Resetable {
   static readonly alienContents = [
-    Alien.contents.alien1,
-    Alien.contents.alien2,
-    Alien.contents.alien2,
-    Alien.contents.alien3,
-    Alien.contents.alien3,
+    Constants.alien.contents.alien1,
+    Constants.alien.contents.alien2,
+    Constants.alien.contents.alien2,
+    Constants.alien.contents.alien3,
+    Constants.alien.contents.alien3,
   ]
   static readonly aliensColors = [
-    Alien.colors.alien1,
-    Alien.colors.alien2,
-    Alien.colors.alien2,
-    Alien.colors.alien3,
-    Alien.colors.alien3,
+    Constants.alien.colors.alien1,
+    Constants.alien.colors.alien2,
+    Constants.alien.colors.alien2,
+    Constants.alien.colors.alien3,
+    Constants.alien.colors.alien3,
   ]
   static readonly hMargin = 10
   static readonly noItemsPerLine = 11
@@ -94,9 +95,9 @@ export class Aliens implements Shapeable, Resetable {
     bgColor: string | undefined,
   ): Alien {
     const x = Math.round(
-      hMargin + colIndex * hSpace + hSpace / 2 - Alien.width / 2,
+      hMargin + colIndex * hSpace + hSpace / 2 - Constants.alien.width / 2,
     )
-    const y = Math.round(3 + rowIndex * (Alien.height + 1))
+    const y = Math.round(3 + rowIndex * (Constants.alien.height + 1))
     const contents =
       Aliens.alienContents[rowIndex % Aliens.alienContents.length]!
     const fgColor = Aliens.aliensColors[rowIndex % Aliens.aliensColors.length]!
@@ -188,10 +189,25 @@ export class Aliens implements Shapeable, Resetable {
       this.getMinY(),
     ]
     const hasValidPosition =
-      Shape.checkPosition(this.canvas, minX, minY, Alien.width, Alien.height) &&
-      Shape.checkPosition(this.canvas, maxX, maxY, Alien.width, Alien.height)
+      Shape.checkPosition(
+        this.canvas,
+        minX,
+        minY,
+        Constants.alien.width,
+        Constants.alien.height,
+      ) &&
+      Shape.checkPosition(
+        this.canvas,
+        maxX,
+        maxY,
+        Constants.alien.width,
+        Constants.alien.height,
+      )
     if (!hasValidPosition) {
-      if (maxY + Alien.height >= this.canvas.height - Alien.height - 1) {
+      if (
+        maxY + Constants.alien.height >=
+        this.canvas.height - Constants.alien.height - 1
+      ) {
         this.events.emit(GameEvent.GameOver)
         return
       }

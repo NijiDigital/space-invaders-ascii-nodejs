@@ -1,27 +1,16 @@
-import { join } from 'node:path'
-
 import type { Canvas } from 'terminal-canvas'
 
 import type { Explodable, Resetable, ShapeConfig, Shooterable } from '../types'
-import { baseDir } from '../util/base-dir'
 import { center } from '../util/helper'
 import { playSound } from '../util/sound-player'
 import { Bullet } from './bullet'
+import Constants from './constants'
 import { Shape } from './shape'
 
 export class Gunner
   extends Shape
   implements Shooterable, Explodable, Resetable
 {
-  static readonly contents = {
-    exploded: [
-      [" ,' %  ", ' ;&+,! '],
-      [' -,+$! ', ' +  ^~ '],
-    ],
-    normal: [' mAm ', 'MAZAM'],
-  }
-  static readonly soundFileShoot = join(baseDir, 'sounds', 'shoot.wav')
-
   readonly bullets: Bullet[] = []
 
   firingBullet = false
@@ -29,7 +18,7 @@ export class Gunner
   constructor(canvas: Canvas, config: Pick<ShapeConfig, 'bgColor'>) {
     super(canvas, {
       ...config,
-      contents: [Gunner.contents.normal],
+      contents: [Constants.gunner.contents.normal],
       fgColor: '#EBDF64',
       height: 2,
       width: 5,
@@ -39,7 +28,7 @@ export class Gunner
   }
 
   explode(): void {
-    this.setContents(Gunner.contents.exploded)
+    this.setContents(Constants.gunner.contents.exploded)
     this.draw({ blink: true })
   }
 
@@ -52,7 +41,7 @@ export class Gunner
     if (this.firingBullet) {
       return false
     }
-    playSound(Gunner.soundFileShoot)
+    playSound(Constants.gunner.soundFileShoot)
     this.firingBullet = true
     const bullet = new Bullet(this.canvas, 'up', {
       bgColor: this.bgColor,

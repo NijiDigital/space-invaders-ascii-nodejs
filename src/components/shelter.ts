@@ -1,26 +1,23 @@
 import type { Canvas } from 'terminal-canvas'
 
 import type { Plan, Shapeable, ShapeConfig } from '../types'
+import Constants from './constants'
 import { Shape } from './shape'
 
 export class Shelter implements Shapeable {
-  static color = '#F83B3A'
-  static readonly height = 3
-  static readonly width = 7
-
   readonly parts: Map<string, Shape>
 
   constructor(canvas: Canvas, config: Pick<ShapeConfig, 'bgColor' | 'x'>) {
     this.parts = new Map<string, Shape>()
     const content = ['/MMMMM\\', 'MMMMMMM', 'MMM MMM']
-    Array.from(Array(Shelter.height)).forEach((_heightItem, dy) => {
+    Array.from(Array(Constants.shelter.height)).forEach((_heightItem, dy) => {
       const partY = Math.round(canvas.height - 10 + dy)
-      Array.from(Array(Shelter.width)).forEach((_widthItem, dx) => {
+      Array.from(Array(Constants.shelter.width)).forEach((_widthItem, dx) => {
         const partX = Math.round(config.x + dx)
         const part = new Shape(canvas, {
           bgColor: config.bgColor,
           contents: [[Shape.getContentChar(content, dx, dy)]],
-          fgColor: Shelter.color,
+          fgColor: Constants.shelter.color,
           height: 1,
           width: 1,
           x: partX,

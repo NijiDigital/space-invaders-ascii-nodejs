@@ -3,35 +3,10 @@ import type { Canvas } from 'terminal-canvas'
 import type { Explodable, ShapeConfig, Shooterable } from '../types'
 import { center } from '../util/helper'
 import { Bullet } from './bullet'
+import Constants from './constants'
 import { Shape } from './shape'
 
 export class Alien extends Shape implements Shooterable, Explodable {
-  static readonly colors = {
-    alien1: '#62DE6D',
-    alien2: '#42E9F4',
-    alien3: '#DB55DD',
-  }
-  static readonly contents = {
-    alien1: [
-      [' {@@} ', ' /""\\ '],
-      [' {@@} ', '  \\/  '],
-    ],
-    alien2: [
-      [' dOOb ', ' ^/\\^ '],
-      [' dOOb ', ' ~||~ '],
-    ],
-    alien3: [
-      [' /MM\\ ', ' |~~| '],
-      [' /MM\\ ', ' \\~~/ '],
-    ],
-    exploded: [
-      [' \\||/ ', ' /||\\ '],
-      ['', ''],
-    ],
-  }
-  static readonly height = 2
-  static readonly width = 6
-
   readonly bullets: Bullet[] = []
   readonly score: number
 
@@ -42,21 +17,21 @@ export class Alien extends Shape implements Shooterable, Explodable {
   ) {
     super(canvas, {
       ...config,
-      height: Alien.height,
-      width: Alien.width,
+      height: Constants.alien.height,
+      width: Constants.alien.width,
     })
     this.score = score
   }
 
   explode(): void {
-    this.setContents(Alien.contents.exploded)
+    this.setContents(Constants.alien.contents.exploded)
     this.draw({ blink: true })
   }
 
   shoot(collisionHandler?: (shape: Shape) => boolean): void {
     const bullet = new Bullet(this.canvas, 'down', {
       bgColor: this.bgColor,
-      fgColor: '#FFFFFF',
+      fgColor: Constants.bullet.color,
       x: this.x + center(this.width),
       y: this.y + this.height,
     })
