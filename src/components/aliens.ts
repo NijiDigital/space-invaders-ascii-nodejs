@@ -38,6 +38,16 @@ export class Aliens implements Shapeable, Resetable {
     'fastinvader4.wav',
   ].map((filename) => join(baseDir, 'sounds', filename))
 
+  static computeAlienScore(rowIndex: number): number {
+    if (rowIndex === 0) {
+      return 30
+    }
+    if (rowIndex < 3) {
+      return 20
+    }
+    return 10
+  }
+
   readonly bgColor: string | undefined
   readonly canvas: Canvas
   readonly events: EventEmitter
@@ -101,7 +111,7 @@ export class Aliens implements Shapeable, Resetable {
     const contents =
       Aliens.alienContents[rowIndex % Aliens.alienContents.length]!
     const fgColor = Aliens.aliensColors[rowIndex % Aliens.aliensColors.length]!
-    const score = rowIndex === 0 ? 30 : rowIndex < 3 ? 20 : 10
+    const score = Aliens.computeAlienScore(rowIndex)
     return new Alien(
       this.canvas,
       {
