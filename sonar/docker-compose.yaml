@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+
+  sonar-scanner:
+    image: sonarsource/sonar-scanner-cli
+    external_links:
+      - sonarqube:sonarqube
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_TOKEN
+      - BROWSERSLIST_IGNORE_OLD_DATA=true
+    volumes:
+      - ../:/usr/src
+      - ./conf/sonar-scanner.properties:/opt/sonar-scanner/conf/sonar-scanner.properties
+    networks:
+      - infra_traefik
+    restart: 'no'
+
+networks:
+  infra_traefik:
+    external: true
