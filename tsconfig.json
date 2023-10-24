@@ -27,7 +27,7 @@
     "strictPropertyInitialization": true,
     "outDir": "./lib",
     "rootDir": "./src",
-    "target": "es2017"
+    "target": "esnext"
   },
   "include": ["src/**/*.ts"]
 }
