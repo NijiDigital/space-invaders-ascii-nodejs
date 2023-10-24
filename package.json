@@ -19,11 +19,11 @@
   "author": "Olivier Penhoat <openhoat@gmail.com> (http://headwood.net/)",
   "license": "ISC",
   "engines": {
-    "node": "^18.17.0",
-    "npm": "^9.8.0"
+    "node": "^18.0.0",
+    "npm": "^9.0.0"
   },
   "volta": {
-    "node": "18.17.1",
+    "node": "20.8.1",
     "npm": "9.8.1"
   },
   "dependencies": {
@@ -35,7 +35,7 @@
     "@types/node": "20.8.3",
     "@types/play-sound": "1.1.0",
     "dotenv-cli": "7.3.0",
-    "eslint-config-niji-ts": "0.0.1",
+    "eslint-config-niji-ts": "0.1.1",
     "rimraf": "5.0.5",
     "ts-node": "10.9.1",
     "typedoc": "0.25.2",
