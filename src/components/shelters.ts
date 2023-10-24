@@ -31,14 +31,14 @@ export class Shelters implements Shapeable {
   }
 
   draw(): void {
-    this.items.forEach((item) => {
+    for (const item of this.items) {
       item.draw()
-    })
+    }
   }
 
   erase(): void {
-    this.items.forEach((item) => {
+    for (const item of this.items) {
       item.erase()
-    })
+    }
   }
 }

@@ -12,11 +12,11 @@ const keypressListener: (
   chunk: unknown,
   pressedKey: { name: string },
 ) => void = (_chunk, pressedKey) => {
-  keyListeners.forEach(({ key, listener }) => {
+  for (const { key, listener } of keyListeners) {
     if (pressedKey.name === key) {
       listener()
     }
-  })
+  }
 }
 
 export const registerKeyListener = (keyListener: KeyListener): void => {
@@ -24,9 +24,9 @@ export const registerKeyListener = (keyListener: KeyListener): void => {
 }
 
 export const registerKeyListeners = (keyListeners: KeyListener[]): void => {
-  keyListeners.forEach((keyListener) => {
+  for (const keyListener of keyListeners) {
     registerKeyListener(keyListener)
-  })
+  }
 }
 
 export const unregisterKeyListener = (keyListener: KeyListener): boolean => {
@@ -43,9 +43,9 @@ export const unregisterKeyListener = (keyListener: KeyListener): boolean => {
 }
 
 export const unregisterKeyListeners = (keyListeners: KeyListener[]): void => {
-  keyListeners.forEach((keyListener) => {
+  for (const keyListener of keyListeners) {
     unregisterKeyListener(keyListener)
-  })
+  }
 }
 
 export const unregisterAllKeyListeners = (): void => {

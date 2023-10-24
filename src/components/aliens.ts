@@ -5,7 +5,13 @@ import type { Canvas } from 'terminal-canvas'
 
 import type { Plan, Resetable, Shapeable, ShapeConfig } from '../types'
 import { baseDir } from '../util/base-dir'
-import { alea, mapIterate, oneOf, reduceIterate } from '../util/helper'
+import {
+  alea,
+  fromBaseDir,
+  mapIterate,
+  oneOf,
+  reduceIterate,
+} from '../util/helper'
 import { playSound } from '../util/sound-player'
 import { Alien } from './alien'
 import Constants from './constants'
@@ -36,7 +42,7 @@ export class Aliens implements Shapeable, Resetable {
     'fastinvader2.wav',
     'fastinvader3.wav',
     'fastinvader4.wav',
-  ].map((filename) => join(baseDir, 'sounds', filename))
+  ].map(fromBaseDir('sounds'))
 
   static computeAlienScore(rowIndex: number): number {
     if (rowIndex === 0) {
@@ -53,7 +59,7 @@ export class Aliens implements Shapeable, Resetable {
   readonly events: EventEmitter
   readonly hSpace: number
 
-  accelDuration = 20000
+  accelDuration = 20_000
   accelTimer: NodeJS.Timeout | undefined
   dx!: -1 | 0 | 1
   dy!: 0 | 1
@@ -88,7 +94,7 @@ export class Aliens implements Shapeable, Resetable {
 
   collidesWith(other: Plan): Alien | undefined {
     let collides = false
-    for (const item of Array.from(this.items)) {
+    for (const item of this.items) {
       collides = item.collidesWith(other)
       if (collides) {
         return item
@@ -151,16 +157,16 @@ export class Aliens implements Shapeable, Resetable {
   }
 
   draw(): void {
-    this.items.forEach((item) => {
-      item.draw({ flush: false })
-    })
+    for (const item of this.items) {
+      item.draw(false, false)
+    }
     this.canvas.flush()
   }
 
   erase(): void {
-    this.items.forEach((item) => {
+    for (const item of this.items) {
       item.erase()
-    })
+    }
   }
 
   getMaxX(): number {
@@ -213,7 +219,9 @@ export class Aliens implements Shapeable, Resetable {
         Constants.alien.width,
         Constants.alien.height,
       )
-    if (!hasValidPosition) {
+    if (hasValidPosition) {
+      this.dy = 0
+    } else {
       if (
         maxY + Constants.alien.height >=
         this.canvas.height - Constants.alien.height - 1
@@ -227,8 +235,6 @@ export class Aliens implements Shapeable, Resetable {
         this.dx = this.dx === 1 ? -1 : 1
         this.dy = 0
       }
-    } else {
-      this.dy = 0
     }
   }
 
@@ -266,9 +272,9 @@ export class Aliens implements Shapeable, Resetable {
   }
 
   stop(): void {
-    Array.from(this.items.values()).forEach((item) => {
+    for (const item of this.items.values()) {
       item.stop()
-    })
+    }
     this.erase()
   }
 
@@ -276,7 +282,7 @@ export class Aliens implements Shapeable, Resetable {
     this.erase()
     this.handleBounds()
     const shooting = alea((4 * 600) / this.timerDuration) === 0
-    const shootingCandidates = shooting && Array.from(this.items.values())
+    const shootingCandidates = shooting && [...this.items.values()]
     this.moveBy(this.dy === 0 ? this.dx : 0, this.dy)
     this.draw()
     playSound(Aliens.soundFilesFastInvader[this.soundIndex]!)

@@ -54,13 +54,7 @@ export class Shape implements Shapeable {
     )
   }
 
-  draw(
-    options: { blink?: boolean; flush?: boolean } = {
-      blink: false,
-      flush: true,
-    },
-  ): void {
-    const { blink = false, flush = true } = options
+  draw(blink = false, flush = true): void {
     this.canvas.moveTo(this.x, this.y)
     if (this.bgColor) {
       this.canvas.background(this.bgColor)
@@ -72,9 +66,9 @@ export class Shape implements Shapeable {
     this.canvas.blink(blink)
     const content = this.contents[this.contentsIndex]!
     this.contentsIndex = (this.contentsIndex + 1) % this.contents.length
-    content.forEach((line) => {
+    for (const line of content) {
       this.canvas.write(line).left(this.width).down(1)
-    })
+    }
     if (flush) {
       this.canvas.flush()
     }
