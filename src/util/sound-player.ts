@@ -1,7 +1,5 @@
-import createSoundPlayer from 'play-sound'
-
-const soundPlayer = createSoundPlayer()
+import player from 'node-wav-player'
 
 export const playSound = (soundFile: string): void => {
-  soundPlayer.play(soundFile)
+  void player.play({ path: soundFile })
 }

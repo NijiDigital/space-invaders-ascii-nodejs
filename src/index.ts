@@ -25,6 +25,7 @@ const start = (): void => {
   })
   game.events.on(GameEvent.Quit, () => {
     quit()
+    // eslint-disable-next-line unicorn/no-process-exit
     process.exit(0)
   })
   startListening()

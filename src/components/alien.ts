@@ -25,7 +25,7 @@ export class Alien extends Shape implements Shooterable, Explodable {
 
   explode(): void {
     this.setContents(Constants.alien.contents.exploded)
-    this.draw({ blink: true })
+    this.draw(true)
   }
 
   shoot(collisionHandler?: (shape: Shape) => boolean): void {
@@ -43,9 +43,9 @@ export class Alien extends Shape implements Shooterable, Explodable {
   }
 
   stop(): void {
-    this.bullets.forEach((bullet) => {
+    for (const bullet of this.bullets) {
       bullet.stop()
-    })
+    }
     this.erase()
   }
 }

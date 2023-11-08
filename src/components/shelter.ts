@@ -10,9 +10,13 @@ export class Shelter implements Shapeable {
   constructor(canvas: Canvas, config: Pick<ShapeConfig, 'bgColor' | 'x'>) {
     this.parts = new Map<string, Shape>()
     const content = ['/MMMMM\\', 'MMMMMMM', 'MMM MMM']
-    Array.from(Array(Constants.shelter.height)).forEach((_heightItem, dy) => {
+    for (const [dy] of Array.from({
+      length: Constants.shelter.height,
+    }).entries()) {
       const partY = Math.round(canvas.height - 10 + dy)
-      Array.from(Array(Constants.shelter.width)).forEach((_widthItem, dx) => {
+      for (const [dx] of Array.from({
+        length: Constants.shelter.width,
+      }).entries()) {
         const partX = Math.round(config.x + dx)
         const part = new Shape(canvas, {
           bgColor: config.bgColor,
@@ -24,27 +28,24 @@ export class Shelter implements Shapeable {
           y: partY,
         })
         this.parts.set(`${partX},${partY}`, part)
-      })
-    })
+      }
+    }
   }
 
   collidesWith(other: Plan): boolean {
-    return Array.from(this.parts.keys()).reduce((collides, position) => {
-      if (collides) {
-        return true
-      }
+    for (const position of this.parts.keys()) {
       const part = this.parts.get(position)
-      if (typeof part !== 'undefined' && part.collidesWith(other)) {
+      if (part?.collidesWith(other)) {
         this.destroyPart(position)
         return true
       }
-      return false
-    }, false)
+    }
+    return false
   }
 
   destroyPart(position: string): boolean {
     const part = this.getPart(position)
-    if (part === null) {
+    if (part === undefined) {
       return false
     }
     part.erase()
@@ -53,18 +54,18 @@ export class Shelter implements Shapeable {
   }
 
   draw(): void {
-    Array.from(this.parts.values()).forEach((part) => {
+    for (const part of this.parts.values()) {
       part.draw()
-    })
+    }
   }
 
   erase(): void {
-    Array.from(this.parts.values()).forEach((part) => {
+    for (const part of this.parts.values()) {
       part.erase()
-    })
+    }
   }
 
-  getPart(position: string): Shape | null {
-    return this.parts.get(position) ?? null
+  getPart(position: string): Shape | undefined {
+    return this.parts.get(position) ?? undefined
   }
 }

@@ -29,7 +29,7 @@ export class Gunner
 
   explode(): void {
     this.setContents(Constants.gunner.contents.exploded)
-    this.draw({ blink: true })
+    this.draw(true)
   }
 
   reset(): void {
@@ -59,9 +59,9 @@ export class Gunner
   }
 
   stop(): void {
-    this.bullets.forEach((bullet) => {
+    for (const bullet of this.bullets) {
       bullet.stop()
-    })
+    }
     this.erase()
   }
 }

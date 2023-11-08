@@ -9,9 +9,12 @@
   "parserOptions": {
     "createDefaultProgram": true,
     "ecmaVersion": 12,
-    "project": ["./tsconfig.eslint.json"],
+    "project": ["./tsconfig.json"],
     "sourceType": "module",
     "tsconfigRootDir": "."
+  },
+  "rules": {
+    "unicorn/prefer-event-target": "off"
   },
   "root": true
 }

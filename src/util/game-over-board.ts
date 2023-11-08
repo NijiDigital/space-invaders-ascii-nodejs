@@ -11,7 +11,7 @@ export const displayGameOverBoard = (canvas: Canvas, score: number): void => {
   const bestScoreFile = join(baseDir, '.best-score')
   const now = new Date()
   const bestScore = existsSync(bestScoreFile)
-    ? (JSON.parse(readFileSync(bestScoreFile, 'utf-8')) as {
+    ? (JSON.parse(readFileSync(bestScoreFile, 'utf8')) as {
         score: number
         timestamp: string
       })
@@ -19,7 +19,11 @@ export const displayGameOverBoard = (canvas: Canvas, score: number): void => {
   if (score > bestScore.score) {
     bestScore.score = score
     bestScore.timestamp = now
-    writeFileSync(bestScoreFile, JSON.stringify(bestScore, null, 2), 'utf-8')
+    writeFileSync(
+      bestScoreFile,
+      JSON.stringify(bestScore, undefined, 2),
+      'utf8',
+    )
   }
   const gameOverLines = [
     ' _______  _______  _______  _______    _______           _______  _______  _ ',
@@ -44,9 +48,9 @@ export const displayGameOverBoard = (canvas: Canvas, score: number): void => {
       Math.round((screenHeight - (gameOverLines.length + 1 + 1 + 1) - 4) / 2),
     )
     .foreground('RADICAL_RED')
-  gameOverLines.forEach((line) => {
+  for (const line of gameOverLines) {
     canvas.write(line).down(1).left(width)
-  })
+  }
   canvas
     .down(1)
     .foreground('WHITE')
