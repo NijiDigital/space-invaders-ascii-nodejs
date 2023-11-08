@@ -1,24 +1,25 @@
 const savedEnv: Record<string, string | undefined> = {}
 
 const deleteEnvVars: (...names: string[]) => void = (...names) => {
-  names.forEach((name) => {
+  for (const name of names) {
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete process.env[name]
-  })
+  }
 }
 
 const restoreEnvVars: (...names: string[]) => void = (...names) => {
   deleteEnvVars(...names)
-  Object.keys(savedEnv).forEach((name) => {
+  for (const name of Object.keys(savedEnv)) {
     process.env[name] = savedEnv[name]
-  })
+  }
 }
 
 const saveEnvVars: (...names: string[]) => void = (...names) => {
-  Object.keys(process.env)
-    .filter((name) => !names.length || names?.includes(name))
-    .forEach((name) => {
+  for (const name of names) {
+    if (names.length === 0 || names.includes(name)) {
       savedEnv[name] = process.env[name]
-    })
+    }
+  }
 }
 
 export { deleteEnvVars, restoreEnvVars, saveEnvVars }

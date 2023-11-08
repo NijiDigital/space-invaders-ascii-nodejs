@@ -1,6 +1,6 @@
-import { join } from 'path'
+import { join } from 'node:path'
 
-import { baseDir } from '../../main/config/base-dir'
+import { baseDir } from '../../src/util/base-dir'
 
 const doMockFromBaseDir: <T = unknown>(
   moduleNameFromBaseDir: string,
@@ -11,10 +11,13 @@ const doMockFromBaseDir: <T = unknown>(
   return jest.doMock(moduleName, factory, options)
 }
 
-const fromBaseDir: (moduleNameFromBaseDir: string) => string = (moduleNameFromBaseDir) =>
-  join(baseDir, moduleNameFromBaseDir)
+const fromBaseDir: (moduleNameFromBaseDir: string) => string = (
+  moduleNameFromBaseDir,
+) => join(baseDir, moduleNameFromBaseDir)
 
-const requireFromBaseDir = <TModule = unknown>(moduleNameFromBaseDir: string): TModule =>
-  require(fromBaseDir(moduleNameFromBaseDir))
+const requireFromBaseDir = <TModule = unknown>(
+  moduleNameFromBaseDir: string,
+  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-return
+): TModule => require(fromBaseDir(moduleNameFromBaseDir))
 
 export { doMockFromBaseDir, fromBaseDir, requireFromBaseDir }

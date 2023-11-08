@@ -2,7 +2,7 @@ import { join } from 'node:path'
 
 import { config as dotenvConfig } from 'dotenv'
 
-import { baseDir } from './jest-config-helper'
+import { baseDir } from '../src/util/base-dir'
 import { deleteEnvVars } from './util/env-utils'
 
 const jestGlobalSetup = (): void => {

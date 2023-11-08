@@ -35,7 +35,7 @@ export class Shelter implements Shapeable {
   collidesWith(other: Plan): boolean {
     for (const position of this.parts.keys()) {
       const part = this.parts.get(position)
-      if (part !== undefined && part.collidesWith(other)) {
+      if (part?.collidesWith(other)) {
         this.destroyPart(position)
         return true
       }

@@ -1,13 +1,13 @@
 declare global {
   type ErrorHandler = (err: unknown) => void
   type ErrorMatcherOptions =
+    | ErrorHandler
     | {
         error?: Error
         handler?: ErrorHandler
+        message?: RegExp | string
         type?: unknown
-        message?: string | RegExp
       }
-    | ErrorHandler
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   namespace jest {
     interface Matchers<R> {
@@ -16,8 +16,10 @@ declare global {
     }
 
     interface Expect {
-      toBeRejectedWith: (opt?: ErrorMatcherOptions) => Promise<jest.CustomMatcherResult>
-      toHaveFailedWith: (opt?: ErrorMatcherOptions) => jest.CustomMatcherResult
+      toBeRejectedWith: (
+        opt?: ErrorMatcherOptions,
+      ) => Promise<CustomMatcherResult>
+      toHaveFailedWith: (opt?: ErrorMatcherOptions) => CustomMatcherResult
     }
   }
 }
@@ -27,5 +29,8 @@ export interface ExpectExtensionable extends jest.ExpectExtendMap {
     promise: Promise<unknown>,
     opt?: ErrorMatcherOptions,
   ) => Promise<jest.CustomMatcherResult>
-  toHaveFailedWith: (fn: () => void, opt?: ErrorMatcherOptions) => jest.CustomMatcherResult
+  toHaveFailedWith: (
+    fn: () => void,
+    opt?: ErrorMatcherOptions,
+  ) => jest.CustomMatcherResult
 }

@@ -281,7 +281,7 @@ export class Aliens implements Shapeable, Resetable {
   tick(collisionHandler?: (shape: Shape) => boolean): void {
     this.erase()
     this.handleBounds()
-    const shooting = alea((4 * 600) / this.timerDuration) === 0
+    const shooting = alea((3 * 600) / this.timerDuration) === 0
     const shootingCandidates = shooting && [...this.items.values()]
     this.moveBy(this.dy === 0 ? this.dx : 0, this.dy)
     this.draw()
