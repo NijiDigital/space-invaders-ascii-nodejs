@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:doc": "typedoc",
-    "clean": "rimraf dist lib",
+    "clean": "rimraf dist lib *.tsbuildinfo",
     "dev": "ts-node src/index.ts",
     "lint": "eslint .",
     "sonar:scan": "dotenv -c -- docker compose -f sonar/docker-compose.yaml up --force-recreate sonar-scanner",
