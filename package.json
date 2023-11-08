@@ -4,7 +4,7 @@
   "description": "A space invaders game in ASCII art with NodeJS and TypeScript",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "build:doc": "typedoc",
     "clean": "rimraf dist lib",
     "dev": "ts-node src/index.ts",
@@ -13,15 +13,11 @@
     "start": "per-env",
     "start:development": "npm run dev",
     "start:production": "node lib/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ts-jest -c jest.config.ts",
     "validate": "npm run build && npm run lint"
   },
   "author": "Olivier Penhoat <openhoat@gmail.com> (http://headwood.net/)",
   "license": "ISC",
-  "engines": {
-    "node": "^18.0.0",
-    "npm": "^9.0.0"
-  },
   "volta": {
     "node": "20.8.1",
     "npm": "9.8.1"
@@ -32,10 +28,16 @@
     "terminal-canvas": "3.1.2"
   },
   "devDependencies": {
+    "@types/jest": "29.5.6",
+    "@types/jest-when": "3.5.4",
     "@types/node": "20.8.3",
     "dotenv-cli": "7.3.0",
     "eslint-config-niji-ts": "0.1.1",
+    "jest-html-reporter": "3.10.2",
+    "jest-junit": "16.0.0",
+    "jest-when": "3.6.0",
     "rimraf": "5.0.5",
+    "ts-jest": "29.1.1",
     "ts-node": "10.9.1",
     "typedoc": "0.25.2",
     "typescript": "5.2.2"
