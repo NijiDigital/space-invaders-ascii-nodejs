@@ -22,10 +22,24 @@ bin/start
 
 Run in production mode:
 
-```shell
-npm run build
-npm run start:production
-```
+- First build the project:
+
+    ```shell
+    npm run clean
+    npm run build
+    ```
+
+- Then start the game:
+
+    ```shell
+    npm run start:production
+    ```
+
+- For a better keyboard experience, on Linux:
+
+    ```shell
+    NODE_ENV=production bin/start
+    ```
 
 Enjoy!
 
