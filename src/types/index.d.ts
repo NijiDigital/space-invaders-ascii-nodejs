@@ -1,3 +1,5 @@
+import './node-wav-player'
+
 import type { Shape } from '../components/shape'
 
 export interface Plan {
